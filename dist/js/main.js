@@ -3,6 +3,7 @@
 var clock = document.querySelector('#clock');
 var clockTwelve = document.querySelector('#main-clock-12');
 var clockTwentyFour = document.querySelector('#main-clock-24');
+var a = true;
 var xhr = new XMLHttpRequest();
 var dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/Moscow';
 xhr.open('GET', dateTimeLink, false);
@@ -28,14 +29,16 @@ function clockAction() {
       minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
       seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
   clock.innerHTML = hours + ":" + minutes + ":" + seconds;
+  printClock(hours, minutes, seconds);
 }
 
-function formatAMPM() {
-  var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours(),
-      minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
-      seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds(),
-      ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12;
-  hours = hours ? hours : 12;
-  clock.innerHTML = hours + ":" + minutes + ":" + seconds + " " + ampm;
+function printClock(h, m, s) {
+  if (a == true) {
+    var ampm = h >= 12 ? 'pm' : 'am';
+    h = h % 12;
+    h = h ? h : 12;
+    clock.innerHTML = h + ":" + m + ":" + s + " " + ampm;
+  } else {
+    clock.innerHTML = h + ":" + m + ":" + s;
+  }
 }
