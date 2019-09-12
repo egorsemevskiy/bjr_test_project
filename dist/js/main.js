@@ -4,6 +4,7 @@ var clock = document.querySelector('#clock');
 var clockTwelve = document.querySelector('#main-clock-12');
 var clockTwentyFour = document.querySelector('#main-clock-24');
 var a = false;
+var time;
 var xhr = new XMLHttpRequest();
 var dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/Moscow';
 clockTwelve.addEventListener('click', function () {
@@ -14,17 +15,21 @@ clockTwentyFour.addEventListener('click', function () {
   a = false;
   clockAction;
 });
-xhr.open('GET', dateTimeLink, false);
-xhr.send();
 
-if (xhr.status != 200) {
-  console.log(xhr.status + ': ' + xhr.statusText);
-} else {
-  displayCurrentTime(xhr.responseText);
+function getTime() {
+  xhr.open('GET', dateTimeLink, false);
+  xhr.send();
+
+  if (xhr.status != 200) {
+    console.log(xhr.status + ': ' + xhr.statusText);
+  } else {
+    displayCurrentTime(xhr.responseText);
+  }
 }
 
 function displayCurrentTime(text) {
-  console.log(text);
+  time = JSON.parse(text).unixtime;
+  console.log(time);
 }
 
 function clockAction() {
@@ -48,4 +53,5 @@ function printClock(h, m, s) {
 
 document.addEventListener("DOMContentLoaded", function (event) {
   setInterval(clockAction, 1000);
+  setInterval(getTime, 60000);
 });
