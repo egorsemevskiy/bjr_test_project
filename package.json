@@ -1,0 +1,27 @@
+{
+  "name": "bjr_test_project.git",
+  "version": "0.0.1",
+  "description": "test project for bjr",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/egorsemevskiy/bjr_test_project.git"
+  },
+  "author": "Egor Semevskiy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/egorsemevskiy/bjr_test_project/issues"
+  },
+  "homepage": "https://github.com/egorsemevskiy/bjr_test_project#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.6.1",
+    "@babel/preset-env": "^7.6.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0"
+  }
+}
