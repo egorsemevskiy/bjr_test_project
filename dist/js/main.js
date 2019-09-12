@@ -52,6 +52,6 @@ function printClock(h, m, s) {
 }
 
 document.addEventListener("DOMContentLoaded", function (event) {
-  setInterval(clockAction, 1000);
-  setInterval(getTime, 60000);
+  setInterval(clockAction(getTime), 1000);
+  setInterval(getTime, 1000);
 });
