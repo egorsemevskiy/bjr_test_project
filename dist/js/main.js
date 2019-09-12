@@ -29,3 +29,13 @@ function clockAction() {
       seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
   clock.innerHTML = hours + ":" + minutes + ":" + seconds;
 }
+
+function formatAMPM() {
+  var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours(),
+      minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
+      seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds(),
+      ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  clock.innerHTML = hours + ":" + minutes + ":" + seconds + " " + ampm;
+}
