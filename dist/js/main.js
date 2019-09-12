@@ -1,15 +1,19 @@
 "use strict";
 
-var _this = void 0;
-
+var clock = document.querySelector('#clock');
+var clockTwelve = document.querySelector('#main-clock-12');
+var clockTwentyFour = document.querySelector('#main-clock-24');
+var a = false;
+var xhr = new XMLHttpRequest();
+var dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/Moscow';
 var BjrClocks = {
   initialize: function initialize() {
+    BjrClocks.clockAction();
     clockTwelve.addEventListener('click', function () {
       a = true;
       BjrClocks.clockAction;
     });
     clockTwentyFour.addEventListener('click', function () {
-      console.log(_this);
       a = false;
       BjrClocks.clockAction;
     });
@@ -32,29 +36,24 @@ var BjrClocks = {
     }
   }
 };
-var clock = document.querySelector('#clock');
-var clockTwelve = document.querySelector('#main-clock-12');
-var clockTwentyFour = document.querySelector('#main-clock-24');
-var a = false;
-var xhr = new XMLHttpRequest();
-var dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/Moscow';
+var AjaxDateTime = {
+  initialize: function initialize() {
+    xhr.open('GET', dateTimeLink, false);
+    xhr.send();
 
-function getTime() {
-  xhr.open('GET', dateTimeLink, false);
-  xhr.send();
-
-  if (xhr.status != 200) {
-    console.log(xhr.status + ': ' + xhr.statusText);
-  } else {
-    displayCurrentTime(xhr.responseText);
+    if (xhr.status != 200) {
+      console.log(xhr.status + ': ' + xhr.statusText);
+    } else {
+      AjaxDateTime.displayCurrentTime(xhr.responseText);
+    }
+  },
+  displayCurrentTime: function displayCurrentTime(text) {
+    var time = JSON.parse(text).unixtime;
+    console.log(time);
   }
-}
-
-function displayCurrentTime(text) {
-  time = JSON.parse(text).unixtime;
-  console.log(time);
-}
-
+};
 document.addEventListener("DOMContentLoaded", function () {
   BjrClocks.initialize();
+  AjaxDateTime.initialize();
+  setInterval(BjrClocks.clockAction, 1000);
 });
