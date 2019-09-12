@@ -28,5 +28,4 @@ function clockAction() {
       minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
       seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
   clock.innerHTML = hours + ":" + minutes + ":" + seconds;
-  console.log(hours + ':' + minutes + ':' + seconds);
 }

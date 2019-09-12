@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link  rel="stylesheet" href="dist/css/style.css">
     <title>O`clock</title>
 </head>
 <body>
-    <div class="container">
-            <div class="main-clock" id="clock"></div>
-            <div class="main-clock__action">
-                    <button id="main-clock-12">12</button>
-                    <button id="main-clock-24">24</button>
+    <div class="flex-container">
+        <div class="row">
+            <div class="flex-item">
+                    <div class="main-clock"><span  id="clock"></span></div>
+                    <div class="main-clock__action">
+                            <button class="main-clock__button" id="main-clock-12">12</button>
+                            <button class="main-clock__button" id="main-clock-24">24</button>
+                    </div>   
             </div>
+        </div>
     </div>
 
 </body>
