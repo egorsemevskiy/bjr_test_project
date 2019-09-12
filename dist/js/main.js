@@ -3,9 +3,19 @@
 var clock = document.querySelector('#clock');
 var clockTwelve = document.querySelector('#main-clock-12');
 var clockTwentyFour = document.querySelector('#main-clock-24');
-var a = true;
+var a = false;
 var xhr = new XMLHttpRequest();
 var dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/Moscow';
+clockTwelve.addEventListener('click', function () {
+  a = true;
+  clockAction;
+  console.log(a);
+});
+clockTwentyFour.addEventListener('click', function () {
+  a = false;
+  clockAction;
+  console.log(a);
+});
 xhr.open('GET', dateTimeLink, false);
 xhr.send();
 
@@ -28,7 +38,6 @@ function clockAction() {
       hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours(),
       minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
       seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-  clock.innerHTML = hours + ":" + minutes + ":" + seconds;
   printClock(hours, minutes, seconds);
 }
 
