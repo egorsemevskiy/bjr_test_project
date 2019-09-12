@@ -27,8 +27,24 @@ function displayCurrentTime(text)  {
 
 function clockAction(){
     let date = new Date(),
-        hours = (date.getHours() < 10) ? '0' + date.getHours() : date.getHours(),
+         hours = (date.getHours() < 10) ? '0' + date.getHours() : date.getHours(),
         minutes = (date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes(),
         seconds = (date.getSeconds() < 10) ? '0' + date.getSeconds() : date.getSeconds();
         clock.innerHTML = (hours +":"+minutes+":"+seconds);
+        printClock(hours, minutes, seconds, false);
 }
+
+
+  function printClock(h, m, s , a){
+      if (a === true){
+        let ampm = h >= 12 ? 'pm' : 'am';
+   
+        h = h % 12;
+        h = h ? h : 12; 
+ 
+        clock.innerHTML = (h +":"+m+":"+s +" " + ampm)
+      }else {
+        clock.innerHTML = (h +":"+m+":"+s);
+      }
+        
+  }
