@@ -8,12 +8,10 @@ let dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/Moscow';
 clockTwelve.addEventListener('click', () => {
     a = true;
     clockAction;
-    console.log(a);
   });
   clockTwentyFour.addEventListener('click', () => {
     a = false;
     clockAction;
-    console.log(a);
   });
 
 xhr.open('GET', dateTimeLink, false);
@@ -25,9 +23,7 @@ if (xhr.status != 200) {
 }
 
   
-    document.addEventListener("DOMContentLoaded", function(event) { 
-        setInterval(clockAction, 1000);
-  });
+
 
  
 
@@ -40,7 +36,6 @@ function clockAction(){
          hours = (date.getHours() < 10) ? '0' + date.getHours() : date.getHours(),
         minutes = (date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes(),
         seconds = (date.getSeconds() < 10) ? '0' + date.getSeconds() : date.getSeconds();
- 
         printClock(hours, minutes, seconds);
 }
 
@@ -56,3 +51,7 @@ function clockAction(){
       }
         
   }
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+    setInterval(clockAction, 1000);
+});

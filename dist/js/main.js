@@ -9,12 +9,10 @@ var dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/Moscow';
 clockTwelve.addEventListener('click', function () {
   a = true;
   clockAction;
-  console.log(a);
 });
 clockTwentyFour.addEventListener('click', function () {
   a = false;
   clockAction;
-  console.log(a);
 });
 xhr.open('GET', dateTimeLink, false);
 xhr.send();
@@ -24,10 +22,6 @@ if (xhr.status != 200) {
 } else {
   displayCurrentTime(xhr.responseText);
 }
-
-document.addEventListener("DOMContentLoaded", function (event) {
-  setInterval(clockAction, 1000);
-});
 
 function displayCurrentTime(text) {
   console.log(text);
@@ -51,3 +45,7 @@ function printClock(h, m, s) {
     clock.innerHTML = h + ":" + m + ":" + s;
   }
 }
+
+document.addEventListener("DOMContentLoaded", function (event) {
+  setInterval(clockAction, 1000);
+});
