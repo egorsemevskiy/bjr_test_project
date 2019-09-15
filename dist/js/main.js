@@ -18,9 +18,15 @@ var BjrClocks = {
       a = false;
       BjrClocks.clockAction;
     });
+    get(dateTimeLink).then(function (text) {
+      clockAction(text);
+    }, function (error) {
+      console.log("Error!!!");
+      console.log(error);
+    });
   },
-  clockAction: function clockAction() {
-    var date = new Date(),
+  clockAction: function clockAction(text) {
+    var date = new Date(text * 1000),
         hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours(),
         minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
         seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
@@ -35,22 +41,19 @@ var BjrClocks = {
     } else {
       clock.innerHTML = h + ":" + m + ":" + s;
     }
-  }
-};
-var AjaxDateTime = {
-  initialize: function initialize() {
-    xhr.open('GET', dateTimeLink, false);
-    xhr.send();
-
-    if (xhr.status != 200) {
-      console.log(xhr.status + ': ' + xhr.statusText);
-    } else {
-      AjaxDateTime.displayCurrentTime(xhr.responseText);
-    }
   },
-  displayCurrentTime: function displayCurrentTime(text) {
-    var time = JSON.parse(text).unixtime;
-    console.log(time);
+  get: function get(url) {
+    return new Promise(function (succeed, fail) {
+      var request = new XMLHttpRequest();
+      request.open("GET", url, true);
+      request.addEventListener("load", function () {
+        if (request.status < 400) succeed(request.response);else fail(new Error("Request failed: " + request.statusText));
+      });
+      request.addEventListener("error", function () {
+        fail(new Error("Network error"));
+      });
+      request.send();
+    });
   }
 };
 var analogClockController = {
