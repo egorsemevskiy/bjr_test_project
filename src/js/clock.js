@@ -36,9 +36,9 @@ let BjrClocks = {
             let ampm = h >= 12 ? 'pm' : 'am';   
             h = h % 12;
             h = h ? h : 12; 
-            setInterval(clock.innerHTML = (h +":"+m+":"+s +" " + ampm))
+            clock.innerHTML = (h +":"+m+":"+s +" " + ampm);
         }else {
-            setInterval(clock.innerHTML = (h +":"+m+":"+s));
+             clock.innerHTML = (h +":"+m+":"+s);
         }
     },
  
@@ -187,6 +187,6 @@ let analogClockController = {
 
 document.addEventListener("DOMContentLoaded", function() { 
     BjrClocks.initialize();
-    setInterval(BjrClocks.getTime,1000);
+    setInterval(BjrClocks.getTime,60000);
     analogClockController.initialize();
 });         
