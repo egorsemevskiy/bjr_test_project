@@ -4,7 +4,7 @@ const babel = require('gulp-babel');
 
  
 gulp.task('default', () =>
-    gulp.src('src/js/main.js')
+    gulp.src('src/js/clock.js')
         .pipe(babel({
             presets: ['@babel/env']
         }))

@@ -1,5 +1,3 @@
-
-
 const clock = document.querySelector('#clock');
 const clockTwelve = document.querySelector('#main-clock-12');
 const clockTwentyFour = document.querySelector('#main-clock-24');
@@ -9,39 +7,30 @@ let a = false;
 let xhr = new XMLHttpRequest();
 let dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/Moscow';
 
-
-let BjrClocks = {
-   
+let BjrClocks = { 
     initialize: () => {
-        BjrClocks.clockAction();
-
         clockTwelve.addEventListener('click', () => {
             a = true;
-            BjrClocks.clockAction;
+            BjrClocks.getTime();
         });
         clockTwentyFour.addEventListener('click', () => {
             a = false;
-            BjrClocks.clockAction;
+            BjrClocks.getTime();
         });
-
-        BjrClocks.get(dateTimeLink).then(function(text) {
-            BjrClocks.clockAction(text);
+       
+      } ,
+      getTime: () => {
+        BjrClocks.get(dateTimeLink).then(function(datePromise) {
+            let dateJson = JSON.parse(datePromise);
+            let dateTime = new Date(dateJson.unixtime*1000);
+            BjrClocks.clockAction( dateTime);
             }, function(error) {
             console.log("Error!!!");
             console.log(error);
         });
-    },
-
-    clockAction: (text) => {
-        let date = new Date(text*1000),
-        hours = (date.getHours() < 10) ? '0' + date.getHours() : date.getHours(),
-        minutes = (date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes(),
-        seconds = (date.getSeconds() < 10) ? '0' + date.getSeconds() : date.getSeconds();
-        BjrClocks.printClock(hours, minutes, seconds);
-    },
-
- 
-    printClock: (h,m,s) => {
+      },
+    
+      printClock: (h,m,s) => {
     
         if (a == true){
             let ampm = h >= 12 ? 'pm' : 'am';   
@@ -52,9 +41,20 @@ let BjrClocks = {
             setInterval(clock.innerHTML = (h +":"+m+":"+s));
         }
     },
+ 
+
+    clockAction: (dateTime) => {
+       
+        let hours = (dateTime.getHours() < 10) ? '0' + dateTime.getHours() : dateTime.getHours(),
+        minutes = (dateTime.getMinutes() < 10) ? '0' + dateTime.getMinutes() : dateTime.getMinutes(),
+        seconds = (dateTime.getSeconds() < 10) ? '0' + dateTime.getSeconds() : dateTime.getSeconds();
+         BjrClocks.printClock(hours, minutes, seconds);
+         
+    },
+
     get: (url) => {
         return new Promise(function(succeed, fail) {
-          var request = new XMLHttpRequest();
+          let request = new XMLHttpRequest();
           request.open("GET", url, true);
           request.addEventListener("load", function() {
             if (request.status < 400)
@@ -68,11 +68,7 @@ let BjrClocks = {
           request.send();
         });
       }
-    
-};
-
-
- 
+}
 let analogClockController = {
     initialize: () =>{
        setInterval(analogClockController.buildClock,1000)
@@ -189,11 +185,8 @@ let analogClockController = {
     }
 }
 
-
 document.addEventListener("DOMContentLoaded", function() { 
     BjrClocks.initialize();
-    AjaxDateTime.initialize();
+    setInterval(BjrClocks.getTime,1000);
     analogClockController.initialize();
-    BjrClocks.clockAction ;
-    setInterval( analogClockController.displayCanvas,1000);
 });         

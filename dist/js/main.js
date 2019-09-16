@@ -18,9 +18,15 @@ var BjrClocks = {
       a = false;
       BjrClocks.clockAction;
     });
+    BjrClocks.get(dateTimeLink).then(function (text) {
+      BjrClocks.clockAction(text);
+    }, function (error) {
+      console.log("Error!!!");
+      console.log(error);
+    });
   },
-  clockAction: function clockAction() {
-    var date = new Date(),
+  clockAction: function clockAction(text) {
+    var date = new Date(text * 1000),
         hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours(),
         minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
         seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
@@ -31,26 +37,23 @@ var BjrClocks = {
       var ampm = h >= 12 ? 'pm' : 'am';
       h = h % 12;
       h = h ? h : 12;
-      clock.innerHTML = h + ":" + m + ":" + s + " " + ampm;
+      setInterval(clock.innerHTML = h + ":" + m + ":" + s + " " + ampm);
     } else {
-      clock.innerHTML = h + ":" + m + ":" + s;
-    }
-  }
-};
-var AjaxDateTime = {
-  initialize: function initialize() {
-    xhr.open('GET', dateTimeLink, false);
-    xhr.send();
-
-    if (xhr.status != 200) {
-      console.log(xhr.status + ': ' + xhr.statusText);
-    } else {
-      AjaxDateTime.displayCurrentTime(xhr.responseText);
+      setInterval(clock.innerHTML = h + ":" + m + ":" + s);
     }
   },
-  displayCurrentTime: function displayCurrentTime(text) {
-    var time = JSON.parse(text).unixtime;
-    console.log(time);
+  get: function get(url) {
+    return new Promise(function (succeed, fail) {
+      var request = new XMLHttpRequest();
+      request.open("GET", url, true);
+      request.addEventListener("load", function () {
+        if (request.status < 400) succeed(request.response);else fail(new Error("Request failed: " + request.statusText));
+      });
+      request.addEventListener("error", function () {
+        fail(new Error("Network error"));
+      });
+      request.send();
+    });
   }
 };
 var analogClockController = {
@@ -168,6 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
   BjrClocks.initialize();
   AjaxDateTime.initialize();
   analogClockController.initialize();
-  setInterval(BjrClocks.clockAction, 1000);
+  BjrClocks.clockAction;
   setInterval(analogClockController.displayCanvas, 1000);
 });
