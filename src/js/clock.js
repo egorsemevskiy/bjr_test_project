@@ -11,14 +11,15 @@ let BjrClocks = {
     initialize: () => {
         clockTwelve.addEventListener('click', () => {
             a = true;
-            //BjrClocks.clockAction;
+            BjrClocks.getTime();
         });
         clockTwentyFour.addEventListener('click', () => {
             a = false;
-            //BjrClocks.clockAction;
+            BjrClocks.getTime();
         });
- 
-
+        BjrClocks.getTime();
+      } ,
+      getTime: () => {
         BjrClocks.get(dateTimeLink).then(function(datePromise) {
             let dateJson = JSON.parse(datePromise);
             let dateTime = new Date(dateJson.unixtime*1000);
@@ -27,26 +28,40 @@ let BjrClocks = {
             console.log("Error!!!");
             console.log(error);
         });
-    },
+      },
+    
     printClock: (h,m,s) => {
     
         if (a == true){
             let ampm = h >= 12 ? 'pm' : 'am';   
             h = h % 12;
             h = h ? h : 12; 
-            setInterval(clock.innerHTML = (h +":"+m+":"+s +" " + ampm),1000)
+             clock.innerHTML = (h +":"+m+":"+s +" " + ampm);
+  
         }else {
-            setInterval(clock.innerHTML = (h +":"+m+":"+s),1000);
+             
+            let i = 0;
+            for(h; h<24;h++){
+                for(m; m<60; m++){
+                    for(s;s<60;++s){
+                        setInterval(function() {
+                            clock.innerHTML = (h +":"+m+":"+s)
+                          }, 1000);
+                    }
+                }
+            }
+      
         }
     },
+ 
 
     clockAction: (dateTime) => {
        
-        let hours =  dateTime.getHours(),
-        minutes =   dateTime.getMinutes(),
-        seconds =   dateTime.getSeconds();
-        //BjrClocks.printClock(hours, minutes, seconds);
-        console.log(true);
+        let hours = (dateTime.getHours() < 10) ? '0' + dateTime.getHours() : dateTime.getHours(),
+        minutes = (dateTime.getMinutes() < 10) ? '0' + dateTime.getMinutes() : dateTime.getMinutes(),
+        seconds = (dateTime.getSeconds() < 10) ? '0' + dateTime.getSeconds() : dateTime.getSeconds();
+         BjrClocks.printClock(hours, minutes, seconds);
+         
     },
 
     get: (url) => {
