@@ -6,7 +6,8 @@ var clockTwentyFour = document.querySelector('#main-clock-24');
 var analogClock = document.querySelector("#myClock");
 var a = false;
 var xhr = new XMLHttpRequest();
-var dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/Moscow';
+var city = "Andorra";
+var dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/' + city;
 var BjrClocks = {
   initialize: function initialize() {
     clockTwelve.addEventListener('click', function () {
@@ -17,6 +18,11 @@ var BjrClocks = {
       a = false;
       BjrClocks.getTime();
     });
+  },
+  handleCityChoise: function handleCityChoise(e) {
+    window.city = e.dataset.city;
+    BjrClocks.getTime();
+    console.log(dateTimeLink);
   },
   getTime: function getTime() {
     BjrClocks.get(dateTimeLink).then(function (datePromise) {
@@ -171,6 +177,7 @@ var analogClockController = {
 };
 document.addEventListener("DOMContentLoaded", function () {
   BjrClocks.initialize();
+  analogClockController.initialize;
   setInterval(BjrClocks.getTime, 60000);
   analogClockController.initialize();
 });
