@@ -24,8 +24,8 @@ let BjrClocks = {
             BjrClocks.clockAction;
         });
 
-        get(dateTimeLink).then(function(text) {
-            clockAction(text);
+        BjrClocks.get(dateTimeLink).then(function(text) {
+            BjrClocks.clockAction(text);
             }, function(error) {
             console.log("Error!!!");
             console.log(error);
@@ -47,9 +47,9 @@ let BjrClocks = {
             let ampm = h >= 12 ? 'pm' : 'am';   
             h = h % 12;
             h = h ? h : 12; 
-             clock.innerHTML = (h +":"+m+":"+s +" " + ampm)
+            setInterval(clock.innerHTML = (h +":"+m+":"+s +" " + ampm))
         }else {
-             clock.innerHTML = (h +":"+m+":"+s);
+            setInterval(clock.innerHTML = (h +":"+m+":"+s));
         }
     },
     get: (url) => {
@@ -194,6 +194,6 @@ document.addEventListener("DOMContentLoaded", function() {
     BjrClocks.initialize();
     AjaxDateTime.initialize();
     analogClockController.initialize();
-    setInterval(BjrClocks.clockAction,1000);
+    BjrClocks.clockAction ;
     setInterval( analogClockController.displayCanvas,1000);
 });         
