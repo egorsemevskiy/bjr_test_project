@@ -21,12 +21,7 @@ let BjrClocks = {
        
       } ,
 
-      handleCityChoise: (e) => {
-        window.city = e.dataset.city;
-          BjrClocks.getTime();
-          console.log(dateTimeLink);
-      },
-
+      
       getTime: () => {
         BjrClocks.get(dateTimeLink).then(function(datePromise) {
             let dateJson = JSON.parse(datePromise);
@@ -37,6 +32,17 @@ let BjrClocks = {
             console.log(error);
         });
       },
+      getTimeCityChoise: (url) => {
+        BjrClocks.get(url).then(function(datePromise) {
+            let dateJson = JSON.parse(datePromise);
+            let dateTime = new Date(dateJson.unixtime*1000);
+            BjrClocks.clockAction( dateTime);
+            }, function(error) {
+            console.log("Error!!!");
+            console.log(error);
+        });
+      },
+      
     
       printClock: (h,m,s) => {
     
@@ -75,11 +81,19 @@ let BjrClocks = {
           });
           request.send();
         });
-      }
+      },
+      
+      handleCityChoise: (e) => {
+      
+        let dateTimeChoiseLink = 'http://worldtimeapi.org/api/timezone/Europe/' + e.dataset.city;
+        BjrClocks.getTimeCityChoise(dateTimeChoiseLink);
+        console.log(dateTimeChoiseLink);
+    },
+
 }
 document.addEventListener("DOMContentLoaded", function() { 
     BjrClocks.initialize();
-    analogClockController.initialize;
+ 
     setInterval(BjrClocks.getTime,60000);
-    analogClockController.initialize();
+   
 });         
