@@ -1,99 +1,94 @@
-const clock = document.querySelector('#clock');
-const clockTwelve = document.querySelector('#main-clock-12');
-const clockTwentyFour = document.querySelector('#main-clock-24');
-const analogClock = document.querySelector("#myClock");
+(function(){
+  const 	clock = document.querySelector('#clock'),
+      clockTwelve = document.querySelector('#main-clock-12'),
+      clockTwentyFour = document.querySelector('#main-clock-24'),
+      analogClock = document.querySelector("#myClock");
 
-let a = false;
-let xhr = new XMLHttpRequest();
-let city = "Andorra";
-let dateTimeLink = 'http://worldtimeapi.org/api/timezone/Europe/' + city;
-
-let BjrClocks = { 
-    initialize: () => {
+  let a = false,
+    dateTime = new Date(),
+    interval = 0,
+    xhr = new XMLHttpRequest(),
+    city = "Europe/Samara",
+    dateTimeLink = 'http://worldtimeapi.org/api/timezone/',
+    BjrClocks = {
+      initialize: () => {
         clockTwelve.addEventListener('click', () => {
-            a = true;
-            BjrClocks.getTime();
+          a = true;
         });
         clockTwentyFour.addEventListener('click', () => {
-            a = false;
-            BjrClocks.getTime();
+           a = false;
         });
-       
+        analogClock.addEventListener("change", BjrClocks.handleCityChoise);
       } ,
-
+      tiktak: () => {
+        clearTimeout(interval);
+        let time = dateTime.getTime();
+        time += 1000;
+        dateTime.setTime(time);
+        BjrClocks.clockAction(dateTime);
+        interval = setTimeout(BjrClocks.tiktak, 1000);
+      },
+      handleCityChoise: (e) => {
+        city = e.target.value;
+        BjrClocks.getTime();
+      },
       
       getTime: () => {
-        BjrClocks.get(dateTimeLink).then(function(datePromise) {
-            let dateJson = JSON.parse(datePromise);
-            let dateTime = new Date(dateJson.unixtime*1000);
-            BjrClocks.clockAction( dateTime);
-            }, function(error) {
-            console.log("Error!!!");
-            console.log(error);
-        });
-      },
-      getTimeCityChoise: (url) => {
-        BjrClocks.get(url).then(function(datePromise) {
-            let dateJson = JSON.parse(datePromise);
-            let dateTime = new Date(dateJson.unixtime*1000);
-            BjrClocks.clockAction( dateTime);
-            }, function(error) {
-            console.log("Error!!!");
-            console.log(error);
+        clearTimeout(interval);
+        clock.innerHTML = "Loading...";
+        let link = dateTimeLink + city;
+        BjrClocks.get(link).then(function(datePromise) {
+          let dateJson = JSON.parse(datePromise),
+            date = dateJson.datetime.split(/\D/);
+          dateTime = new Date(date[0], date[1]-1, date[2], date[3], date[4], date[5]);
+          BjrClocks.clockAction( dateTime);
+          BjrClocks.tiktak();
+        }, function(error) {
+          console.log("Error!!!");
+          console.log(error);
+          setTimeout(BjrClocks.getTime, 2000);
         });
       },
       
-    
       printClock: (h,m,s) => {
-    
         if (a == true){
-            let ampm = h >= 12 ? 'pm' : 'am';   
-            h = h % 12;
-            h = h ? h : 12; 
-            clock.innerHTML = (h +":"+m+":"+s +" " + ampm);
-        }else {
-             clock.innerHTML = (h +":"+m+":"+s);
+          let ampm = h >= 12 ? 'pm' : 'am';  
+          h = h % 12;
+          h = h ? h : 12;
+          clock.innerHTML = (h +":"+m+":"+s +" " + ampm);
+        } else {
+          clock.innerHTML = (h +":"+m+":"+s);
         }
-    },
- 
-
-    clockAction: (dateTime) => {
-       
+      },
+      
+      clockAction: (dateTime) => {
         let hours = (dateTime.getHours() < 10) ? '0' + dateTime.getHours() : dateTime.getHours(),
-        minutes = (dateTime.getMinutes() < 10) ? '0' + dateTime.getMinutes() : dateTime.getMinutes(),
-        seconds = (dateTime.getSeconds() < 10) ? '0' + dateTime.getSeconds() : dateTime.getSeconds();
-         BjrClocks.printClock(hours, minutes, seconds);
-         
-    },
-
-    get: (url) => {
+          minutes = (dateTime.getMinutes() < 10) ? '0' + dateTime.getMinutes() : dateTime.getMinutes(),
+          seconds = (dateTime.getSeconds() < 10) ? '0' + dateTime.getSeconds() : dateTime.getSeconds();
+        BjrClocks.printClock(hours, minutes, seconds);
+      },
+      
+      get: (url) => {
         return new Promise(function(succeed, fail) {
-          let request = new XMLHttpRequest();
-          request.open("GET", url, true);
-          request.addEventListener("load", function() {
-            if (request.status < 400)
-              succeed(request.response);
-            else
-              fail(new Error("Request failed: " + request.statusText));
+          if(xhr)
+            xhr.abort();
+          xhr = new XMLHttpRequest();
+          xhr.open("GET", url, true);
+          xhr.addEventListener("load", function() {
+          if (xhr.status < 400)
+            succeed(xhr.response);
+          else
+            fail(new Error("Request failed: " + xhr.statusText));
           });
-          request.addEventListener("error", function() {
+          xhr.addEventListener("error", function() {
             fail(new Error("Network error"));
           });
-          request.send();
+          xhr.send();
         });
-      },
-      
-      handleCityChoise: (e) => {
-      
-        let dateTimeChoiseLink = 'http://worldtimeapi.org/api/timezone/Europe/' + e.dataset.city;
-        BjrClocks.getTimeCityChoise(dateTimeChoiseLink);
-        console.log(dateTimeChoiseLink);
-    },
-
-}
-document.addEventListener("DOMContentLoaded", function() { 
-    BjrClocks.initialize();
- 
-    setInterval(BjrClocks.getTime,60000);
-   
-});         
+      }
+    };
+    document.addEventListener("DOMContentLoaded", function(e) {
+      BjrClocks.initialize();
+      BjrClocks.getTime();
+    });
+}());

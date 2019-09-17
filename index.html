@@ -9,25 +9,18 @@
     
 </head>
 <body>
-    <div class="flex-container">
-        <div class="row">
-            <div class="flex-item">
-                    <canvas height='320' width='320' id='myClock'></canvas>
-                    <div class="main-clock"><span  id="clock"></span></div>
-                    <div class="main-clock__action">
-                            <button class="main-clock__button" id="main-clock-12">12</button>
-                            <button class="main-clock__button" id="main-clock-24">24</button>
-                    </div>   
-                    <div class="city-choise">
-                        <a href="#" onclick="BjrClocks.handleCityChoise(this)" data-city="Amsterdam">Amsterdam</a>
-
-                        <a href="#" onclick="BjrClocks.handleCityChoise(this);" data-city="Andorra">Andorra</a>
-                        <a href="#" onclick="BjrClocks.handleCityChoise(this);" data-city="Astrakhan">Astrakhan</a>
-                        <a href="#" onclick="BjrClocks.handleCityChoise(this);" data-city="Athens">Athens</a>
-                        <a href="#" onclick="BjrClocks.handleCityChoise(this);" data-city="Kiev">Kiev</a>
-                    </div>
-            </div>
-        </div>
+    <div id="clock">Loading...</div>
+    <p>
+        <button type="button" id="main-clock-12">12</button>
+        <button type="button" id="main-clock-24">24</button>
+    </p>
+    <p>
+        <select id="myClock">
+            <option value="Europe/Moscow">Moscow</option>
+            <option value="Europe/Samara" selected>Samara</option>
+            <option value="Asia/Vladivostok">Vladivostok</option>
+        </select>
+    </p>
     </div>
 
 </body>
